@@ -19,8 +19,8 @@ Route::get('/', function () {
     return view('landing');
 });
 
-Route::get('/home-page', function () {
-    return view('home-page');
+Route::get('/home', function () {
+    return view('home');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

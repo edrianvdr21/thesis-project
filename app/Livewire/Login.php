@@ -24,9 +24,14 @@ class Login extends Component
 
         // Attempt to authenticate the user
         if (Auth::attempt($credentials)) {
-            // $user = Auth::user();
-            // $this->emit('userLoggedIn', $user);
-            return redirect('/home-page');
+            // Retrieve the authenticated user
+            $user = Auth::user();
+
+            // Retrieve the user_id
+            $userId = $user->id;
+
+            // Redirect to the home page with the user_id as a query parameter
+            return redirect('/home?user_id=' . $userId);
         } else {
             // Authentication failed
             // You can handle failed login attempts here, such as showing an error message

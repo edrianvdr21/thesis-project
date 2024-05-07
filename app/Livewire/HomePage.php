@@ -1,6 +1,10 @@
 <?php
 
 namespace App\Livewire;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 use App\Models\UserProfile;
 use App\Models\User;
 
@@ -8,33 +12,21 @@ use Livewire\Component;
 
 class HomePage extends Component
 {
-    public function render()
-    {
-        return view('livewire.home-page');
-    }
+    // For logged in user
+    public $userId;
+    public $userProfile;
 
-    public $user;
-
-    protected $listeners = ['userLoggedIn'];
-
-    public function userLoggedIn($user)
-    {
-        $this->user = $user;
-    }
-
+    // For displaying workers
     public $userProfiles;
 
-    public function mount()
+    public function mount(Request $request)
     {
-        // Fetch all user profiles
-        // $this->userProfiles = UserProfile::all();
+        // Retrieve the user_id query parameter from the request
+        $this->userId = $request->query('user_id');
 
-        // Fetch Clients
-        // $this->userProfiles = UserProfile::where('role_id', 2)->get();
+        $this->userProfile = UserProfile::where('user_id', $this->userId)->first();
 
-        // Retrieve user details using the userId passed from the route
-        // $this->user = User::findOrFail($userId);
-
+// Displaying users where role_id = 2 "Client"
         $this->userProfiles = UserProfile::where('role_id', 2)->get()->map(function ($profile) {
             // Convert gender_id
             switch ($profile->gender_id) {
@@ -72,4 +64,18 @@ class HomePage extends Component
         });
 
     }
+
+    public function render()
+    {
+        // Retrieve the authenticated user using the user_id
+        $user = Auth::user();
+
+        // Retrieve the user's details, perform any other logic as needed
+
+        return view('livewire.home-page', [
+            'user' => $user,
+            'userProfile' => $this->userProfile,
+        ]);
+    }
+
 }
