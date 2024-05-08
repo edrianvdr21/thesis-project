@@ -5,5 +5,4 @@
 @livewire('home-page')
 @include('partials.footer')
 
-
 @endsection

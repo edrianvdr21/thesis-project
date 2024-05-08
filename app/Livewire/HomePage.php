@@ -16,7 +16,13 @@ class HomePage extends Component
     public function mount()
     {
         // Display all users
-        $this->users = UserProfile::with('user')->get();
+        // $this->users = UserProfile::with('user')->get();
+
+        // Display all workers
+        $this->users = UserProfile::with('user')
+            ->where('role_id', 3)
+            ->get();
+
     }
 
     public function render()

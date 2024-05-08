@@ -28,9 +28,13 @@ class AuthController extends Controller
         $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials)) {
-            $users = UserProfile::with('user')->get();
+            $users = UserProfile::with('user')
+                    ->whereHas('user', function ($query) {
+                        $query->where('role_id', 2);
+                    })
+                    ->get();
+    return view('home', ['users' => $users]);
 
-            return view('home', ['users' => $users]);
         }
 
         // Authentication failed...
@@ -40,8 +44,11 @@ class AuthController extends Controller
     // Home
     public function home()
     {
-        $users = UserProfile::with('user')->get();
-        return view('home', ['users' => $users]);
+        $users = UserProfile::with('user')
+                    ->where('role_id', 3)
+                    ->get();
+return view('home', ['users' => $users]);
+
     }
 
     // Logout
