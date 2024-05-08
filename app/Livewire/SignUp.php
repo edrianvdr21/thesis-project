@@ -25,10 +25,6 @@ class SignUp extends Component
 
     public function mount()
     {
-        // $this->regions = Region::getTableData('region');
-        // $this->provinces = Province::getTableData('province');
-        // $this->cities = City::getTableData('city');
-
         $this->regions = Region::all();
         $this->provinces = collect();
         $this->cities = collect();

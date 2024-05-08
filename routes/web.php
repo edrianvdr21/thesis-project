@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SignUpController;
 
 
 /*
@@ -15,13 +16,36 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::get('/', function () {
-    return view('landing');
-});
+// Route::get('/', function () {
+//     return view('landing');
+// });
 
 Route::get('/home', function () {
     return view('home');
 });
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+// Route::get('/', [SignUpController::class, 'index']);
+// Route::get(uri: '/', [AuthController::class, 'index']);
+
+// Landing page
+Route::get('/', [AuthController::class, 'index']);
+// Route::get('/', [AuthController::class, 'index'])->name('landing');
+// Route::get('/sign_up', [AuthController::class, 'sign_up']);
+Route::get('/sign-up', [AuthController::class, 'sign_up'])->name('sign_up');
+// Login
+Route::post('/login', [AuthController::class, 'login']);
+// Home page - landing page after Login
+Route::get('/home', [AuthController::class, 'home'])->name('home');
+// Go to Sign Up Worker page
+Route::get('/become-a-worker', [AuthController::class, 'sign_up_worker'])->name('sign_up_worker');
+
+
+
+
+
+
+// Route::get('/index', [SignUpController::class, 'index'])->name('index');
+// Route::get('/sign_up', [SignUpController::class, 'sign_up'])->name('sign_up');
+// Route::get('/sign_up_worker', [SignUpController::class, 'sign_up_worker'])->name('sign_up_worker');
+// Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

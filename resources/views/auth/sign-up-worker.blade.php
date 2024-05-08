@@ -2,8 +2,7 @@
 
 @section('content')
 
-@livewire('home-page')
+@livewire('sign-up-worker')
 @include('partials.footer')
-
 
 @endsection

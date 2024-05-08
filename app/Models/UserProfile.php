@@ -30,5 +30,10 @@ class UserProfile extends Model
         return self::all();
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public $timestamps = false;
 }
