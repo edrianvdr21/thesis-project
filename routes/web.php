@@ -38,6 +38,10 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/home', [AuthController::class, 'home'])->name('home');
 // Go to Sign Up Worker page
 Route::get('/become-a-worker', [AuthController::class, 'sign_up_worker'])->name('sign_up_worker');
+// Go to Worker Profile
+Route::get('/worker/{id}', [AuthController::class, 'showWorkerProfile'])->name('worker.profile');
+// Book a Service
+Route::post('/book', [AuthController::class, 'book'])->name('book');
 
 
 

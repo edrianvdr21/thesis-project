@@ -22,7 +22,6 @@ class HomePage extends Component
         $this->users = UserProfile::with('user')
             ->where('role_id', 3)
             ->get();
-
     }
 
     public function render()

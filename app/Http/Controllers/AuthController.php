@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\UserProfile;
+use App\Models\User;
+use App\Models\WorkerProfile;
+
+use App\Models\Booking;
 
 class AuthController extends Controller
 {
@@ -33,8 +37,7 @@ class AuthController extends Controller
                         $query->where('role_id', 2);
                     })
                     ->get();
-    return view('home', ['users' => $users]);
-
+            return view('home', ['users' => $users]);
         }
 
         // Authentication failed...
@@ -47,8 +50,7 @@ class AuthController extends Controller
         $users = UserProfile::with('user')
                     ->where('role_id', 3)
                     ->get();
-return view('home', ['users' => $users]);
-
+        return view('home', ['users' => $users]);
     }
 
     // Logout
@@ -83,4 +85,64 @@ return view('home', ['users' => $users]);
         // Redirect the user to a success page or any other appropriate destination
         return redirect()->route('worker_success');
     }
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Display the specified worker profile.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showWorkerProfile($id)
+    {
+        $user = Auth::user();
+
+        $worker = User::findOrFail($id);
+
+        // Fetch the worker's details from user_profiles table
+        $userProfile = UserProfile::where('user_id', $id)->first();
+
+        // Fetch the worker's details from worker_profiles table
+        $workerProfile = WorkerProfile::where('user_id', $id)->first();
+
+        return view('worker-profile', compact('user', 'worker', 'userProfile', 'workerProfile'));
+    }
+
+    // Book a Service
+    public function book(Request $request)
+    {
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'user_id' => 'required',
+            'worker_id' => 'required',
+            'booking_date' => 'required|date',
+            'booking_time' => 'required',
+            'booking_notes' => 'required|string',
+        ]);
+
+        // Insert into bookings table
+        $booking = new Booking();
+        $booking->user_id = $validatedData['user_id'];
+        $booking->worker_id = $validatedData['worker_id'];
+        $booking->date = $validatedData['booking_date'];
+        $booking->time = $validatedData['booking_time'];
+        $booking->notes = $validatedData['booking_notes'];
+        $booking->status = "Pending";
+        $booking->save();
+
+        // Optionally, you can redirect the user after successful submission
+        return redirect()->back()->with('success', 'Booking has been created successfully.');
+    }
+
+
 }
