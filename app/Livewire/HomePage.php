@@ -8,10 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\UserProfile;
 use App\Models\User;
+use App\Models\WorkerProfile;
 
 class HomePage extends Component
 {
-    public $users;
+    public $workers;
 
     public function mount()
     {
@@ -19,9 +20,11 @@ class HomePage extends Component
         // $this->users = UserProfile::with('user')->get();
 
         // Display all workers
-        $this->users = UserProfile::with('user')
-            ->where('role_id', 3)
-            ->get();
+        // $this->users = UserProfile::with('user')
+        //     ->where('role_id', 3)
+        //     ->get();
+        $this->workers = WorkerProfile::with('user', 'address')->get();
+
     }
 
     public function render()

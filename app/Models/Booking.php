@@ -25,7 +25,7 @@ class Booking extends Model
 
     public function workerProfile()
     {
-        return $this->belongsTo(WorkerProfile::class);
+        return $this->belongsTo(WorkerProfile::class, 'worker_id');
     }
 
     public $timestamps = false;

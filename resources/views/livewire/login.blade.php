@@ -1,13 +1,22 @@
 <div>
     <div class="flex items-center justify-center">
-        <img class="mx-auto" src="" alt="{{ config('app.name') }} logo">
+        <img class="mx-auto my-4" src="{{ asset('images/Logo.png') }}" alt="{{ config('app.name') }} logo">
     </div>
     <div>
-        <h1 class="text-center">Login</h1>
+        <h1 class="text-center text-3xl font-bold my-4">Login</h1>
     </div>
     <div class="grid place-content-center gap-[25px]">
         <form action="/login" method="POST">
         @csrf
+            <div class="relative my-2">
+                @if ($errors->any())
+                    <div class="text-center">
+                        @foreach ($errors->all() as $error)
+                            <p class="bg-red-200 p-2">{{ $error }}</sp>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
             <div class="relative">
                 <svg class="absolute left-4 top-[11px]" width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M7.5 7.532C9.57107 7.532 11.25 5.8459 11.25 3.766C11.25 1.6861 9.57107 0 7.5 0C5.42893 0 3.75 1.6861 3.75 3.766C3.75 5.8459 5.42893 7.532 7.5 7.532ZM7.5 1.883C8.53553 1.883 9.375 2.72605 9.375 3.766C9.375 4.80595 8.53553 5.649 7.5 5.649C6.46447 5.649 5.625 4.80595 5.625 3.766C5.625 2.72605 6.46447 1.883 7.5 1.883ZM9.375 9.415H5.625C2.5184 9.415 0 11.9441 0 15.064V18.83H15V15.064C15 11.9441 12.4816 9.415 9.375 9.415ZM13.125 16.947H1.875V15.064C1.875 12.9841 3.55393 11.298 5.625 11.298H9.375C11.4461 11.298 13.125 12.9841 13.125 15.064V16.947Z" fill="#333333"/>

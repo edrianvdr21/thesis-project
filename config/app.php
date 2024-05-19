@@ -57,7 +57,8 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    // 'url' => env('APP_URL', 'http://localhost'),
+    'url' => 'http://serbisyorist',
 
     'asset_url' => env('ASSET_URL'),
 

@@ -15,4 +15,9 @@ class Category extends Model
     {
         return self::all();
     }
+
+    public function service()
+    {
+        return $this->hasOne(Service::class, 'category_id');
+    }
 }

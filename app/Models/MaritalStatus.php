@@ -5,21 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Service extends Model
+class MaritalStatus extends Model
 {
     use HasFactory;
 
-    protected $table = 'services';
+    protected $table = 'marital_statuses';
 
     public static function getTableData()
     {
         return self::all();
     }
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
-
-    public $timestamps = false;
 }

@@ -6,7 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ config('app.name') }}</title>
 
+    {{-- Tailwind CSS --}}
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
+    {{-- Flowbite --}}
+    <script src="{{ asset('/js/flowbite.min.js') }}"></script>
 </head>
 <body>
 

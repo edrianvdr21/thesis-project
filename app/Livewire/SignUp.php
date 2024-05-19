@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use Livewire\Component;
 
+use App\Models\Gender;
+use App\Models\MaritalStatus;
 use App\Models\Region;
 use App\Models\Province;
 use App\Models\City;
@@ -19,12 +21,16 @@ class SignUp extends Component
         return view('livewire.sign-up');
     }
 
+    public $genders;
+    public $marital_statuses;
     public $regions;
     public $provinces;
     public $cities;
 
     public function mount()
     {
+        $this->genders = Gender::all();
+        $this->marital_statuses = MaritalStatus::all();
         $this->regions = Region::all();
         $this->provinces = collect();
         $this->cities = collect();

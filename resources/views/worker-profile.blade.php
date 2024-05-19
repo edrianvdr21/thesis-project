@@ -27,8 +27,8 @@
             <form action="/book" method="POST">
             @csrf
                 {{-- Hidden fields to pass on controller --}}
-                <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-                <input type="hidden" name="worker_id" value="{{ $workerProfile->id }}">
+                <input type="text" name="user_id" value="{{ Auth::id() }}">
+                <input type="text" name="worker_id" value="{{ $workerProfile->id }}">
 
                 <div>
                     <label for="booking_date">Booking Date</label>
@@ -49,8 +49,6 @@
             </form>
         </div>
     </div>
-
-
 </div>
 
 @include('partials.footer')

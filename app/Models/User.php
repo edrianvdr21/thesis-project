@@ -23,9 +23,20 @@ class User extends Authenticatable
         return $this->hasOne(UserProfile::class);
     }
 
-    public function workerprofile()
+    public function userProfile()
+    {
+        return $this->hasOne(UserProfile::class, 'user_id');
+    }
+
+
+    public function workerPprofile()
     {
         return $this->hasOne(WorkerProfile::class);
+    }
+
+    public function workerProfile()
+    {
+        return $this->hasOne(WorkerProfile::class, 'user_id');
     }
 
     public function address()

@@ -34,7 +34,9 @@
             <label for="gender">Gender</label>
             <select name="gender" id="gender" class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="gender">
                 <option value="">Select Gender</option>
-                <option value="1">Female</option>
+                @foreach($genders as $gender)
+                    <option value="{{ $gender->id }}">{{ $gender->gender }}</option>
+                @endforeach
             </select>
         </div>
     </div>
@@ -44,10 +46,11 @@
             <label for="marital_status">Marital Status</label>
             <select name="marital_status" id="marital_status" class="border border-vhn-primary rounded w-full py-2 px-3" wire:model="marital_status">
                 <option value="">Select Marital Status</option>
-                <option value="1">Single</option>
+                @foreach($marital_statuses as $marital_status)
+                    <option value="{{ $marital_status->id }}">{{ $marital_status->marital_status }}</option>
+                @endforeach
             </select>
         </div>
-
     </div>
 
 

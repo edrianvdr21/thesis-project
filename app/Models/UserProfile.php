@@ -35,5 +35,15 @@ class UserProfile extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function gender()
+    {
+        return $this->belongsTo(Gender::class, 'gender_id');
+    }
+
+    public function marital_status()
+    {
+        return $this->belongsTo(MaritalStatus::class, 'marital_status_id');
+    }
+
     public $timestamps = false;
 }

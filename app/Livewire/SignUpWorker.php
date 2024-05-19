@@ -103,7 +103,6 @@ class SignUpWorker extends Component
         // Update the role_id to 3 in the user_profiles table
         $user->profile()->update(['role_id' => 3]);
 
-
         dd([
             'user_id' => $user->id,
             'category_id' => $this->category,
