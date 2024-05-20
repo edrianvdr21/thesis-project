@@ -1,6 +1,14 @@
 <nav class="bg-blue-800 p-4">
     <div class="container mx-auto flex justify-between items-center">
-        <div class="text-white text-xl font-bold">{{ config('app.name') }}</div>
+        <div class="text-white text-xl font-bold">
+            <a
+                href="{{ route('home') }}"
+                class="flex items-center text-white text-xl font-bold px-2 border border-blue-800 focus:border-white focus:outline-none"
+                >
+                <img class="h-8 mr-2" src="{{ asset('images/Logo v2.png') }}" alt="{{ config('app.name') }} logo">
+                {{ config('app.name') }}
+            </a>
+        </div>
         <div>
             <ul class="flex flex-col p-4 md:p-0 mt-4 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-blue-800">
                 <li>

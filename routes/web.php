@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MyBookingsController;
 use App\Http\Controllers\SignUpController;
 
 
@@ -25,22 +26,33 @@ use App\Http\Controllers\SignUpController;
 
 // Landing page
 Route::get('/', [AuthController::class, 'index']);
-// Route::get('/sign_up', [AuthController::class, 'sign_up']);
+// Go to Sign Up
 Route::get('/sign-up', [AuthController::class, 'sign_up'])->name('sign_up');
+// Go to Sign Up and Become a Worker
+Route::get('/sign-up-and-become-a-worker', [AuthController::class, 'signUpAndBecomeAWorker'])->name('sign_up_and_become_a_worker');
+
+
 // Login
 Route::post('/login', [AuthController::class, 'login']);
-    // Home page - landing page after Login
-    Route::get('/home', [AuthController::class, 'home'])->name('home');
+// Logout
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-        // Client Navbar
-        // Go to Sign Up Worker page
-        Route::get('/become-a-worker', [AuthController::class, 'sign_up_worker'])->name('sign_up_worker');
-        // Go to My Bookings
-        Route::get('/my-bookings', [AuthController::class, 'my_bookings'])->name('my_bookings');
-            // Cancel Booking
-            Route::post('/cancel-booking/{booking}', [AuthController::class, 'cancelBooking'])->name('cancel.booking');
-            // Accept Booking
-            Route::post('/accept-booking/{booking}', [AuthController::class, 'acceptBooking'])->name('accept.booking');
+// Home page - landing page after Login
+Route::get('/home', [AuthController::class, 'home'])->name('home');
+
+    // Client Navbar
+    // Go to Sign Up Worker page
+    Route::get('/become-a-worker', [AuthController::class, 'sign_up_worker'])->name('sign_up_worker');
+    // Go to My Bookings
+    Route::get('/my-bookings', [MyBookingsController::class, 'my_bookings'])->name('my_bookings');
+        // Cancel Booking
+        Route::post('/cancel-booking/{booking}', [MyBookingsController::class, 'cancelBooking'])->name('cancel.booking');
+        // Accept Booking
+        Route::post('/accept-booking/{booking}', [MyBookingsController::class, 'acceptBooking'])->name('accept.booking');
+        // Complete Booking
+        Route::post('/complete-booking/{booking}', [MyBookingsController::class, 'completeBooking'])->name('complete.booking');
+        // Submit Rating
+        Route::post('/submit-rating/{booking}', [MyBookingsController::class, 'submitRating'])->name('submit.rating');
 
 
 
@@ -48,14 +60,3 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/worker/profile/{userId}/{workerProfileId}', [AuthController::class, 'showWorkerProfile'])->name('worker.profile');
 // Book a Service
 Route::post('/book', [AuthController::class, 'book'])->name('book');
-
-
-
-
-
-
-// Route::get('/index', [SignUpController::class, 'index'])->name('index');
-// Route::get('/sign_up', [SignUpController::class, 'sign_up'])->name('sign_up');
-// Route::get('/sign_up_worker', [SignUpController::class, 'sign_up_worker'])->name('sign_up_worker');
-// Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

@@ -1,6 +1,6 @@
 <div>
-    <div class="flex items-center justify-center">
-        <img class="mx-auto my-4" src="{{ asset('images/Logo.png') }}" alt="{{ config('app.name') }} logo">
+    <div class="flex items-center justify-center mt-4">
+        <img class="mx-auto my-4 max-w-full max-h-48" src="{{ asset('images/Logo v1.png') }}" alt="{{ config('app.name') }} logo">
     </div>
     <div>
         <h1 class="text-center text-3xl font-bold my-4">Login</h1>
@@ -38,7 +38,7 @@
                 </svg>
                 <input
                     class="pl-12 w-[346px] h-10 bg-white rounded-[5px] border-2 border-teal-800 mt-2"
-                    type="text"
+                    type="password"
                     name="password"
                     placeholder="Password"
                     required
@@ -57,9 +57,14 @@
                 <a
                     href="{{ route('sign_up') }}"
                     class="flex justify-center items-center text-center text-blue-800 hover:underline focus:underline rounded-[5px] focus:outline-none"
-                    {{-- wire:click="go_to_sign_up_worker" --}}
                     >
                     Create an Account
+                </a>
+                <a
+                    href="{{ route('sign_up_and_become_a_worker') }}"
+                    class="flex justify-center items-center text-center mt-4 text-blue-800 hover:underline focus:underline rounded-[5px] focus:outline-none"
+                    >
+                    Become a Worker
                 </a>
             </div>
         </form>

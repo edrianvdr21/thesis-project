@@ -19,9 +19,15 @@ class Address extends Model
         'home_address',
     ];
 
-    public static function getTableData()
+    public $timestamps = false;
+
+    public function user()
     {
-        return self::all();
+        return $this->belongsTo(User::class);
+    }
+    public function workerProfile()
+    {
+        return $this->hasOne(WorkerProfile::class);
     }
 
     public function region()
@@ -38,6 +44,4 @@ class Address extends Model
     {
         return $this->belongsTo(City::class, 'city_id');
     }
-
-    public $timestamps = false;
 }

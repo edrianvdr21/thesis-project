@@ -25,77 +25,7 @@
 
 @if ($my_bookings_as_role != "as Client")
     {{-- Filter by Status --}}
-    {{-- @include('features.filter-by-status', ['role' => "Worker"]) --}}
-
-    <div class="text-lg font-medium text-center my-4">
-        <ul class="flex justify-center w-full">
-            <li class="w-1/2">
-                <a href="{{ route('my_bookings', [
-                    'my_bookings_as_role' => 'as Worker',
-                    'filter_by_status' => ""
-                    ]) }}"
-                    class="inline-block w-full px-2 py-4 text-sm rounded text-dark border border-white hover:border-blue-800 focus:border-blue-800 focus:outline-none
-                    @if ($filter_by_status == "") bg-blue-300 @endif
-                    "
-                    @if ($filter_by_status == "") aria-current="page" @endif
-                    >
-                    All ({{ $totalCount }})
-                </a>
-            </li>
-            <li class="w-1/2">
-                <a href="{{ route('my_bookings', [
-                    'my_bookings_as_role' => 'as Worker',
-                    'filter_by_status' => 'Pending'
-                    ]) }}"
-                    class="inline-block w-full px-2 py-4 text-sm rounded text-dark border border-white hover:border-blue-800 focus:border-blue-800 focus:outline-none
-                    @if ($filter_by_status == "Pending") bg-blue-300 @endif
-                    "
-                    @if ($filter_by_status == "Pending") aria-current="page" @endif
-                    >
-                    Pending ({{ $pendingCount }})
-                </a>
-            </li>
-            <li class="w-1/2">
-                <a href="{{ route('my_bookings', [
-                    'my_bookings_as_role' => 'as Worker',
-                    'filter_by_status' => 'Accepted'
-                    ]) }}"
-                    class="inline-block w-full px-2 py-4 text-sm rounded text-dark border border-white hover:border-blue-800 focus:border-blue-800 focus:outline-none
-                    @if ($filter_by_status == "Accepted") bg-blue-300 @endif
-                    "
-                    @if ($filter_by_status == "Accepted") aria-current="page" @endif
-                    >
-                    Accepted ({{ $acceptedCount }})
-                </a>
-            </li>
-            <li class="w-1/2">
-                <a href="{{ route('my_bookings', [
-                    'my_bookings_as_role' => 'as Worker',
-                    'filter_by_status' => 'Completed'
-                    ]) }}"
-                    class="inline-block w-full px-2 py-4 text-sm rounded text-dark border border-white hover:border-blue-800 focus:border-blue-800 focus:outline-none
-                    @if ($filter_by_status == "Completed") bg-blue-300 @endif
-                    "
-                    @if ($filter_by_status == "Completed") aria-current="page" @endif
-                    >
-                    Completed ({{ $completedCount }})
-                </a>
-            </li>
-            <li class="w-1/2">
-                <a href="{{ route('my_bookings', [
-                    'my_bookings_as_role' => 'as Worker',
-                    'filter_by_status' => 'Cancelled'
-                    ]) }}"
-                    class="inline-block w-full px-2 py-4 text-sm rounded text-dark border border-white hover:border-blue-800 focus:border-blue-800 focus:outline-none
-                    @if ($filter_by_status == "Cancelled") bg-blue-300 @endif
-                    "
-                    @if ($filter_by_status == "Cancelled") aria-current="page" @endif
-                    >
-                    Cancelled ({{ $cancelledCount }})
-                </a>
-            </li>
-        </ul>
-    </div>
+    @include('features.filter-by-status', ['role' => "Worker"])
 @endif
 
 
@@ -108,11 +38,7 @@
         {{-- Displaying of Bookings --}}
         <div class="container mx-auto border-t-2 border-gray-800">
             @foreach ($workerBookings as $workerBooking)
-            <div class="bg-white rounded-lg shadow-md mb-4 p-4">
-                <p class="text-gray-600">Booking ID: {{ $workerBooking->id }}</p>
-                <p class="text-gray-600">User ID: {{ $workerBooking->user->id }}</p>
-                <p class="text-gray-600">Worker ID: {{ $workerBooking->workerProfile->id }}</p>
-
+            <div class="bg-white rounded-lg shadow-md mb-4 p-4 border-b border-gray-500">
                 <div class="md:grid md:grid-cols-4 md:text-center border-b border-gray-300 py-4">
                     <div>
                         <p class="text-dark">{{ $workerBooking->user->userProfile->first_name }} {{ $workerBooking->user->userProfile->last_name }}</p>
@@ -147,7 +73,7 @@
                         <p class="text-gray-800">
                             @if ($workerBooking->status == "Pending")
                                 Initial Schedule:
-                            @elseif ($workerBooking->status == "Accepted")
+                            @elseif ($workerBooking->status != "Pending")
                                 Schedule:
                             @endif
                             {{ DateTime::createFromFormat('Y-m-d', $workerBooking->date)->format('F d, Y') }},
@@ -155,6 +81,69 @@
                         </p>
 
                         <p class="text-gray-800">Notes: {{ $workerBooking->notes }}</p>
+
+                        @if ($workerBooking->status == "Pending")
+                            @php
+                                $booked_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $workerBooking->booked_datetime);
+                            @endphp
+
+                            <p class="text-gray-800 mt-4">
+                                Booked on
+                                {{ $booked_datetime->format('F d, Y, g:i A') }}
+                            </p>
+                        @elseif ($workerBooking->status == "Accepted")
+                            @php
+                                $booked_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $workerBooking->booked_datetime);
+                                $accepted_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $workerBooking->accepted_datetime);
+                            @endphp
+
+                            <p class="text-gray-800 mt-4">
+                                Booked on
+                                {{ $booked_datetime->format('F d, Y, g:i A') }}
+                            </p>
+                            <p class="text-gray-800">
+                                Accepted on
+                                {{ $accepted_datetime->format('F d, Y, g:i A') }}
+                            </p>
+                        @elseif ($workerBooking->status == "Completed")
+                            @php
+                                $booked_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $workerBooking->booked_datetime);
+                                $accepted_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $workerBooking->accepted_datetime);
+                                $completed_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $workerBooking->completed_datetime);
+                            @endphp
+
+                            <p class="text-gray-800 mt-4">
+                                Booked on
+                                {{ $booked_datetime->format('F d, Y, g:i A') }}
+                            </p>
+                            <p class="text-gray-800">
+                                Accepted on
+                                {{ $accepted_datetime->format('F d, Y, g:i A') }}
+                            </p>
+                            <p class="text-gray-800">
+                                Completed on
+                                {{ $completed_datetime->format('F d, Y, g:i A') }}
+                            </p>
+                        @elseif ($workerBooking->status == "Cancelled")
+                            @php
+                                $booked_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $workerBooking->booked_datetime);
+                                $cancelled_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $workerBooking->cancelled_datetime);
+                            @endphp
+
+                            <p class="text-gray-800 mt-4">
+                                Booked on
+                                {{ $booked_datetime->format('F d, Y, g:i A') }}
+                            </p>
+                            <p class="text-gray-800">
+                                Cancelled by
+                                @if ($workerBooking->cancelled_by == 0)
+                                    Client
+                                @elseif ($workerBooking->cancelled_by == 1)
+                                    Worker
+                                @endif
+                                on {{ $cancelled_datetime->format('F d, Y, g:i A') }}
+                            </p>
+                        @endif
                     </div>
                 </div>
 
@@ -194,6 +183,16 @@
                             </button>
 
                             <form
+                                action="{{ route('complete.booking', ['booking' => $workerBooking->id]) }}"
+                                method="POST"
+                                onsubmit="return confirm('Are you certain you want to mark this booking as completed?');"
+                                >
+                                @csrf
+                                <button type="submit" class="bg-blue-800 hover:bg-blue-900 text-white font-bold mx-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                    Mark as Completed
+                                </button>
+                            </form>
+                            <form
                                 action="{{ route('cancel.booking', ['booking' => $workerBooking->id]) }}"
                                 method="POST"
                                 onsubmit="return confirm('Are you sure you want to cancel this booking?');"
@@ -206,9 +205,18 @@
                                     Cancel
                                 </button>
                             </form>
-                        @endif
+                        @elseif ($workerBooking->status == "Completed")
+                            <div class="justify-center items-center text-center">
+                                @if ($workerBooking->rating != null)
+                                    <p class="text-lg font-bold text-gray-800">Rating: {{ number_format($workerBooking->rating, 1) }}</p>
+                                    <p class="text-gray-700 mt-2">{{ $workerBooking->review }}</p>
+                                @endif
 
-                        @if ($workerBooking->status == "Cancelled")
+                                <button class="bg-blue-300 text-gray-900 font-bold py-2 px-4 rounded cursor-not-allowed" style="pointer-events: none;">
+                                    Completed
+                                </button>
+                            </div>
+                        @elseif ($workerBooking->status == "Cancelled")
                             <button class="bg-red-200 text-gray-600 font-bold py-2 px-4 rounded cursor-not-allowed" style="pointer-events: none;">
                                 Cancelled
                             </button>

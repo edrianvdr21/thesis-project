@@ -77,12 +77,34 @@ class SignUpWorker extends Component
 
     public function sign_up_as_a_worker()
     {
+        // Validate the incoming data
+        $validatedData = $this->validate([
+            'category' => 'required',
+            'service' => 'required',
+            'description' => 'required',
+            'pricing' => 'required',
+            'minimum_duration' => 'required',
+            'maximum_duration' => 'required',
+            'working_days' => 'required',
+            'start_time' => 'required',
+            'end_time' => 'required',
+        ], [
+            'category.required' => 'Category is required',
+            'service.required' => 'Service is required',
+            'description.required' => 'Description is required',
+            'pricing.required' => 'Pricing is required',
+            'minimum_duration.required' => 'Minimum duration is required',
+            'maximum_duration.required' => 'Maximum duration is required',
+            'working_days.required' => 'Working days is required',
+            'start_time.required' => 'Start time is required',
+            'end_time.required' => 'End time is required',
+        ]);
+
         $user = Auth::user();
 
         $working_days_string = implode(',', array_map(function ($day) {
             return $day ? '1' : '0';
         }, $this->working_days));
-
 
         // Insert into worker_profiles
         $user->workerprofile()->create([
@@ -103,21 +125,21 @@ class SignUpWorker extends Component
         // Update the role_id to 3 in the user_profiles table
         $user->profile()->update(['role_id' => 3]);
 
-        dd([
-            'user_id' => $user->id,
-            'category_id' => $this->category,
-            'service_id' => $this->service,
-            'description' => $this->description,
-            'pricing' => $this->pricing,
-            'minimum_duration' => $this->minimum_duration,
-            'maximum_duration' => $this->maximum_duration,
-            'working_days' => $working_days_string,
-            'start_time' => $this->start_time,
-            'end_time' => $this->end_time,
-            'valid_id' => $this->valid_id,
-            'resume' => $this->resume,
-        ]);
+        return redirect('/home');
 
-        // dd("Method triggered successfully!");
+        // dd([
+        //     'user_id' => $user->id,
+        //     'category_id' => $this->category,
+        //     'service_id' => $this->service,
+        //     'description' => $this->description,
+        //     'pricing' => $this->pricing,
+        //     'minimum_duration' => $this->minimum_duration,
+        //     'maximum_duration' => $this->maximum_duration,
+        //     'working_days' => $working_days_string,
+        //     'start_time' => $this->start_time,
+        //     'end_time' => $this->end_time,
+        //     'valid_id' => $this->valid_id,
+        //     'resume' => $this->resume,
+        // ]);
     }
 }
