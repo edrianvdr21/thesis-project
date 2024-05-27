@@ -58,5 +58,8 @@ Route::get('/home', [AuthController::class, 'home'])->name('home');
 
 // Go to Worker Profile
 Route::get('/worker/profile/{userId}/{workerProfileId}', [AuthController::class, 'showWorkerProfile'])->name('worker.profile');
+    // Track Viewing
+    // Route::post('/track/worker/profile/view', 'AuthController@trackView')->name('track.worker.profile.view');
+    Route::post('/track/worker/profile/view', [AuthController::class, 'trackView'])->name('track.worker.profile.view');
 // Book a Service
 Route::post('/book', [AuthController::class, 'book'])->name('book');

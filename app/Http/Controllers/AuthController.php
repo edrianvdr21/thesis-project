@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Models\UserProfile;
 use App\Models\User;
 use App\Models\WorkerProfile;
+use App\Models\WorkerProfileView;
 
 use App\Models\Booking;
 
@@ -199,33 +200,62 @@ class AuthController extends Controller
         return view('worker-profile', compact('user', 'worker', 'userProfile', 'workerProfile', 'availableDays'));
     }
 
-
-
-    // Book a Service
-    public function book(Request $request)
+    // Tracking of Viewing a Worker's Profile
+    public function trackView(Request $request)
     {
-        // Validate the incoming request data
-        $validatedData = $request->validate([
-            'user_id' => 'required',
-            'worker_id' => 'required',
-            'booking_date' => 'required|date',
-            'booking_time' => 'required',
-            'booking_notes' => 'required|string',
+        $userId = auth()->id();
+        $workerId = $request->worker_id;
+
+        // Get the last view for the current user and worker
+        $lastView = WorkerProfileView::where('user_id', $userId)
+                    ->where('worker_id', $workerId)
+                    ->latest('viewed_at')
+                    ->first();
+
+        // Check if the last view was more than 15 minutes ago
+        if ($lastView && $lastView->viewed_at->gt(Carbon::now()->subMinutes(15))) {
+            // If less than 15 minutes, redirect without inserting
+            return redirect()->route('worker.profile', ['userId' => $request->user_id, 'workerProfileId' => $workerId]);
+        }
+
+        // Insert new view record
+        WorkerProfileView::create([
+            'user_id' => $userId,
+            'worker_id' => $workerId,
+            'category_id' => $request->category_id,
+            'service_id' => $request->service_id,
+            'viewed_at' => now(),
         ]);
 
-        // Insert into bookings table
-        $booking = new Booking();
-        $booking->user_id = $validatedData['user_id'];
-        $booking->worker_id = $validatedData['worker_id'];
-        $booking->date = $validatedData['booking_date'];
-        $booking->time = $validatedData['booking_time'];
-        $booking->notes = $validatedData['booking_notes'];
-        $booking->status = "Pending";
-        $booking->booked_datetime = Carbon::now();
-        $booking->save();
+        return redirect()->route('worker.profile', ['userId' => $request->user_id, 'workerProfileId' => $workerId]);
+        }
 
-        return redirect()->back()->with('success', 'You\'ve successfully booked a service!');
+
+
+
+        // Book a Service
+        public function book(Request $request)
+        {
+            // Validate the incoming request data
+            $validatedData = $request->validate([
+                'user_id' => 'required',
+                'worker_id' => 'required',
+                'booking_date' => 'required|date',
+                'booking_time' => 'required',
+                'booking_notes' => 'required|string',
+            ]);
+
+            // Insert into bookings table
+            $booking = new Booking();
+            $booking->user_id = $validatedData['user_id'];
+            $booking->worker_id = $validatedData['worker_id'];
+            $booking->date = $validatedData['booking_date'];
+            $booking->time = $validatedData['booking_time'];
+            $booking->notes = $validatedData['booking_notes'];
+            $booking->status = "Pending";
+            $booking->booked_datetime = Carbon::now();
+            $booking->save();
+
+            return redirect()->back()->with('success', 'You\'ve successfully booked a service!');
+        }
     }
-
-
-}
